@@ -2,19 +2,18 @@ import numpy as np
 from numpy.linalg import inv
 import pandas as pd
 
+# Each functions predicts the response for the input x
+# using a model fitted to the training_set
+# training_set must be a pd.DataFrame with columns 'x' and 'y'.
 
-def nearest_neighbor(training_set, x):  # training_set must be pd.DataFrame with columns 'x' and 'y'.
-    ''' Predict response for given predictor x by finding data point in training set
-        with predictor nearest x.
-    '''
+
+def nearest_neighbor(training_set, x):
+
     index_of_nearest_x = abs(x - pd.to_numeric(training_set.loc[:, 'x'])).idxmin()
     return training_set.loc[index_of_nearest_x, 'y']
 
 
 def weighted_nearest_neighbors(training_set, x):
-    ''' Predict response for given predictor x by calculating a weighted sum
-        of the responses in the training set.
-    '''
 
     a = 1 / np.abs(x - pd.to_numeric(training_set.loc[:, 'x']))
     numerator = np.dot(a, pd.to_numeric(training_set.loc[:, 'y']))
@@ -23,9 +22,6 @@ def weighted_nearest_neighbors(training_set, x):
 
 
 def sqr_weighted_nearest_neighbors(training_set, x):
-    ''' Predict response for given predictor x by calculating a weighted sum
-        of the responses in the training set.
-    '''
 
     a = 1 / np.abs(x - pd.to_numeric(training_set.loc[:, 'x'])) ** 2
     numerator = np.dot(a, pd.to_numeric(training_set.loc[:, 'y']))
@@ -34,9 +30,6 @@ def sqr_weighted_nearest_neighbors(training_set, x):
 
 
 def exp_weighted_nearest_neighbors(training_set, x):
-    ''' Predict response for given predictor x by calculating a weighted sum
-        of the responses in the training set.
-    '''
 
     a = np.exp(-np.abs(x - pd.to_numeric(training_set.loc[:, 'x'])))
     numerator = np.dot(a, pd.to_numeric(training_set.loc[:, 'y']))
@@ -45,6 +38,7 @@ def exp_weighted_nearest_neighbors(training_set, x):
 
 
 def ols(training_set, x):
+
     n = len(training_set)
     xs = np.array(training_set.loc[:, 'x'])
     ys = np.array(training_set.loc[:, 'y'])
@@ -59,6 +53,7 @@ def ols(training_set, x):
 
 
 def predict(training_set, x, method="nearest_neighbor"):
+    
     if method == "nearest_neighbor":
         return nearest_neighbor(training_set, x)
     elif method == "weighted_nearest_neighbors":
