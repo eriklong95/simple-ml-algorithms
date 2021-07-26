@@ -1,8 +1,6 @@
 import numpy as np
 from numpy.linalg import inv
 import pandas as pd
-from scipy import stats
-import matplotlib.pyplot as plt
 
 
 def nearest_neighbor(training_set, x):  # training_set must be pd.DataFrame with columns 'x' and 'y'.

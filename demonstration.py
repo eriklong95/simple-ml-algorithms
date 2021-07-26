@@ -1,5 +1,4 @@
 import numpy as np
-from numpy.linalg import inv
 import pandas as pd
 from scipy import stats
 import matplotlib.pyplot as plt
@@ -37,16 +36,25 @@ y_test = test_set.loc[:, 'y']
 
 fig, [[ax1, ax2], [ax3, ax4]] = plt.subplots(2, 2, constrained_layout=True)
 
-methods = ["nearest_neighbor", "weighted_nearest_neighbors", "sqr_weighted_nearest_neighbors", "exp_weighted_nearest_neighbors"]
+methods = ["nearest_neighbor",
+           "weighted_nearest_neighbors",
+           "sqr_weighted_nearest_neighbors",
+           "exp_weighted_nearest_neighbors"]
 axs = [ax1, ax2, ax3, ax4]
+
 for i in range(4):
-    axs[i].set_title(methods[i])
-    axs[i].scatter(X_train, y_train, s=5, color='blue')
-    axs[i].scatter(X_test, y_test, color='red')
-    axs[i].scatter(X_test, [predict(training_set, x, method=methods[i]) for x in X_test], color='green')
-    # TODO: legends
+    ax = axs[i]
+    method = methods[i]
+    ax.set_title(method)
+    ax.scatter(X_train, y_train, s=5, color='blue', label="training set")
+    ax.scatter(X_test, y_test, color='red', label="test set")
+    ax.scatter(X_test, [predict(training_set, x, method=method) for x in X_test],
+               color='green', label="predictions")
+    ax.legend()
 
 x_values = np.linspace(0, N, 1000)
 for ax in axs:
-    ax.plot(x_values, [predict(training_set, x, method="ols") for x in x_values], color='black')
+    ax.plot(x_values, [predict(training_set, x, method="ols") for x in x_values],
+            color='black', label="ols regr line")
+    ax.legend()
 plt.show()
